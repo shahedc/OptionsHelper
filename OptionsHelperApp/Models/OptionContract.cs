@@ -12,10 +12,10 @@ namespace OptionsHelperApp.Models
         public string AccountOwner { get; set; }
         public string OptionType { get; set; }
         public double OpenAmount { get; set; }
-        public DateOnly DateOpened { get; set; }
+        public DateTime DateOpened { get; set; }
         public double ClosedAmount { get; set; }
-        public DateOnly ExpirationDate { get; set; }
-        public DateOnly ClosingDate { get; set; }
+        public DateTime ExpirationDate { get; set; }
+        public DateTime ClosingDate { get; set; }
         public double ProfitLoss { get; set; }
         public double ProfitPercentage { get; set; }
         public int DaysToExpiration { get; set; }
