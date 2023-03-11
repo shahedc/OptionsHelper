@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OptionsHelperApp.Models;
 
 namespace OptionsHelperApp.Data
 {
@@ -9,5 +10,8 @@ namespace OptionsHelperApp.Data
             : base(options)
         {
         }
+
+        public DbSet<OptionContract> OptionContracts { get; set; }
+
     }
 }
