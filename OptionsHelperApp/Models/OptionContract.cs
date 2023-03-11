@@ -18,7 +18,7 @@ namespace OptionsHelperApp.Models
         public DateTime? ClosingDate { get; set; }
         public double ProfitLoss { get; set; }
         public double ProfitPercentage { get; set; }
-        public int DaysToExpiration { get; set; }
+        public int DaysToClose { get; set; }
 
         public bool Assigned { get; set; }
         public double StrikePrice { get; set; }
