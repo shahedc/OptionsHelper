@@ -16,6 +16,24 @@
                 @Html.DisplayNameFor(model => model.ContractInfo)
             </th>
             <th>
+                STATUS
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOpened)
+            </th>
+            <th>
+                DTE
+            </th>
+            <th>
+                Buyback
+            </th>
+            <th>
+                Days Held
+            </th>
+            <th>
+                P/L
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Symbol)
             </th>
             <th>
@@ -29,9 +47,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.OpenAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOpened)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ClosedAmount)
@@ -62,9 +77,69 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ContractInfo)
+            </td>
+            <td>
+                @if (item.ExpirationDate.Date > DateTime.Now.Date)
+                {
+                    // not expired yet
+                    @if (item.ClosingDate != null)
+                    {
+                        // but closed, since there's a closing date
+                        <span> CLOSED </span>
+                    } else{
+                        // unpired, but still open, no closing date
+                        <span style="color:red"> OPEN </span>
+                    }
+                }
+                else
+                {
+                    // expired
+                    <span> EXPIRED </span>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOpened)
+            </td>
+            <td>
+                @Convert.ToInt32((item.ExpirationDate.Date - DateTime.Now.Date).Days)
+            </td>
+            <td>
+                60% @(item.OpenAmount * 0.4)
+                <br />
+                80% @(item.OpenAmount * 0.2)
+                <br />
+            </td>
+            <td>
+                @if (item.ClosingDate != null)
+                {
+                    // closed early
+                    <span>@Convert.ToInt32(((DateTime)item.ClosingDate - item.DateOpened).Days)</span>
+                } else 
+                {
+                    // go until exp date
+                    <span>@Convert.ToInt32(((DateTime)item.ExpirationDate - item.DateOpened).Days)</span>
+                }
+            </td>
+            <td>
+                @if (item.ClosedAmount != null)
+                {
+                    // closed early
+                    <span>
+                        @(item.OpenAmount - item.ClosedAmount),
+                        @((item.OpenAmount - item.ClosedAmount) / (item.OpenAmount))%
+                    </span>
+                } else
+                {
+                    // did not buy to close
+                    @if (item.ExpirationDate.Date < DateTime.Now.Date)
+                    {
+                        // expired with 100% again
+                        <span>@(item.OpenAmount), 100%</span>
+                    }
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Symbol)
@@ -80,9 +155,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OpenAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOpened)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ClosedAmount)
