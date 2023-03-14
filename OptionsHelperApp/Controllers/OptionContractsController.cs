@@ -22,8 +22,15 @@ namespace OptionsHelperApp.Controllers
         // GET: OptionContracts
         public async Task<IActionResult> Index()
         {
+            var optionContracts = _context.OptionContracts;
+
+            var openContracts = optionContracts
+                .Where(oc => oc.ExpirationDate > DateTime.Now.Date
+                && oc.ClosingDate == null)
+                .OrderBy(d => d.ExpirationDate);
+
               return _context.OptionContracts != null ? 
-                          View(await _context.OptionContracts.ToListAsync()) :
+                          View(await openContracts.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.OptionContracts'  is null.");
         }
 
